@@ -1,9 +1,0 @@
-Changelog
-
-Feb 3
-- Typo fixes, add graphics
-
-Jan 25 2026
-- Mecha Mayhem Sig Submission
-
-To Compress PDF: Use pdfstirling or Adobe's webapp
