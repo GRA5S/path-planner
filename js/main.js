@@ -114,7 +114,7 @@ function mousePressed() {
                     forwards: true,
                     minSpeed: 0,
                     maxSpeed: 127,
-                    speed: 1,
+                    speed: 1.0,
                     timeout: 2000,
                     angularDirection: "auto",
                     actions: {

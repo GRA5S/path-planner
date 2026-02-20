@@ -12,7 +12,7 @@ function openWaypointEditor(index) {
 	document.getElementById('angular-direction-input').value = waypoint.angularDirection || "auto";
     document.getElementById('min-speed-input').value = waypoint.minSpeed;
     document.getElementById('max-speed-input').value = waypoint.maxSpeed;
-    document.getElementById('speed-input').value = waypoint.speed || 1;
+    document.getElementById('speed-input').value = waypoint.speed || 1.0;
     document.getElementById('timeout-input').value = waypoint.timeout;
 
     // Populate action checkboxes
