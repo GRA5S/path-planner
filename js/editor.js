@@ -7,11 +7,11 @@ function openWaypointEditor(index) {
 
     // Populate the form with the current waypoint properties
     document.getElementById('angle-input').value = waypoint.angle;
-    // document.getElementById('include-turn-input').value = waypoint.includeTurn;
+    document.getElementById('include-turn-input').value = waypoint.includeTurn;
     document.getElementById('forwards-input').value = waypoint.forwards;
-	// document.getElementById('angular-direction-input').value = waypoint.angularDirection || "auto";
-    // document.getElementById('min-speed-input').value = waypoint.minSpeed;
-    // document.getElementById('max-speed-input').value = waypoint.maxSpeed;
+	document.getElementById('angular-direction-input').value = waypoint.angularDirection || "auto";
+    document.getElementById('min-speed-input').value = waypoint.minSpeed;
+    document.getElementById('max-speed-input').value = waypoint.maxSpeed;
     document.getElementById('speed-input').value = waypoint.speed || 1;
     document.getElementById('timeout-input').value = waypoint.timeout;
 
@@ -36,11 +36,11 @@ function saveWaypointChanges() {
 
         // Update waypoint properties with form values
         waypoint.angle = parseInt(document.getElementById('angle-input').value);
-        // waypoint.includeTurn = document.getElementById('include-turn-input').value === 'true';
+        waypoint.includeTurn = document.getElementById('include-turn-input').value === 'true';
         waypoint.forwards = document.getElementById('forwards-input').value === 'true';
-		// waypoint.angularDirection = document.getElementById('angular-direction-input').value;
-        // waypoint.minSpeed = parseInt(document.getElementById('min-speed-input').value);
-        // waypoint.maxSpeed = parseInt(document.getElementById('max-speed-input').value);
+		waypoint.angularDirection = document.getElementById('angular-direction-input').value;
+        waypoint.minSpeed = parseInt(document.getElementById('min-speed-input').value);
+        waypoint.maxSpeed = parseInt(document.getElementById('max-speed-input').value);
         waypoint.speed = parseFloat(document.getElementById('speed-input').value);
         waypoint.timeout = parseInt(document.getElementById('timeout-input').value);
 

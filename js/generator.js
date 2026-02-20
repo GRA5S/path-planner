@@ -66,6 +66,39 @@ function generateCode() {
         let code = "// Evian PID\n";
         code += `// Starting point: (${((firstWaypoint.x - (canvasSize / 2)) / canvasSize * 144).toFixed(2)} in, ${((firstWaypoint.y  - (canvasSize / 2)) / canvasSize * -144).toFixed(2)} in)\n`;
 
+        // Generate actions for first waypoint
+        const firstActions = firstWaypoint.actions || {};
+        for (const [actionName, isActive] of Object.entries(firstActions)) {
+            if (isActive) {
+                switch(actionName) {
+                    case 'hoard':
+                        code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_high();\n_ = self.midgoal.set_low();\n`;
+                        break;
+                    case 'outtake':
+                        code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE);\n`;
+                        break;
+                    case 'matchload':
+                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.hood.set_low();\n`;
+                        break;
+                    case 'midgoal':
+                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.midgoal.set_high();\n`;
+                        break;
+                    case 'midgoalSkills':
+                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.midgoal.set_low();\n`;
+                        break;
+                    case 'score':
+                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n`;
+                        break;
+                    case 'wing':
+                        code += `_ = self.wing.toggle();\n`;
+                        break;
+                    case 'intakeStop':
+                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n`;
+                        break;
+                }
+            }
+        }
+
         for (let i = 1; i < path.length; i++) {
             let waypoint = path[i];
 
@@ -99,36 +132,36 @@ function generateCode() {
             // code += `kw::driveTo(${distance.toFixed(2)}, ${path[i].timeout});\n`;
             code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${path[i].speed})\n    .await;\n`
             const actions = waypoint.actions || {};
-                for (const [actionName, isActive] of Object.entries(actions)) {
-                    if (isActive) {
-                        switch(actionName) {
-                            case 'hoard':
-                                code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_high();\n_ = self.midgoal.set_low();\n`;
-                                break;
-                            case 'outtake':
-                                code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE);\n`;
-                                break;
-                            case 'matchload':
-                                code += `_ = self.matchload.toggle();\n`;
-                                break;
-                            case 'midgoal':
-                                code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high();\n`;
-                                break;
-                            case 'midgoalSkills':
-                                code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE/2);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high();\n`;
-                                break;
-                            case 'score':
-                                code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_low();\n`;
-                                break;
-                            case 'wing':
-                                code += `_ = self.wing.toggle();\n`;
-                                break;
-                            case 'intakeStop':
-                                code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
-                                break;
-                        }
+            for (const [actionName, isActive] of Object.entries(actions)) {
+                if (isActive) {
+                    switch(actionName) {
+                        case 'hoard':
+                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_high();\n_ = self.midgoal.set_low();\n`;
+                            break;
+                        case 'outtake':
+                            code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE);\n`;
+                            break;
+                        case 'matchload':
+                            code += `_ = self.matchload.toggle();\n`;
+                            break;
+                        case 'midgoal':
+                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high();\n`;
+                            break;
+                        case 'midgoalSkills':
+                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE/2);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high();\n`;
+                            break;
+                        case 'score':
+                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_low();\n`;
+                            break;
+                        case 'wing':
+                            code += `_ = self.wing.toggle();\n`;
+                            break;
+                        case 'intakeStop':
+                            code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
+                            break;
                     }
                 }
+            }
             // console.log(`dx: ${dx}, dy: ${dy}, angle: ${trigBearingAngle}`);
 
             prevX = rotatedX;
