@@ -50,7 +50,7 @@ select, input[type="number"], input[type="text"] {
     border-radius: 4px;
 }
 button {
-    background-color: #ff4081;
+    background-color: #ff4040;
     color: white;
     border: none;
     padding: 10px;
@@ -60,7 +60,7 @@ button {
     margin-bottom: 8px;
 }
 button:hover {
-    background-color: #ff79b0;
+    background-color: #ff7979;
 }
 .checkbox-container {
     display: flex;
