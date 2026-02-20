@@ -114,6 +114,7 @@ function mousePressed() {
                     forwards: true,
                     minSpeed: 0,
                     maxSpeed: 127,
+                    speed: 1,
                     timeout: 2000,
                     angularDirection: "auto"
                 });
@@ -122,7 +123,7 @@ function mousePressed() {
             } else {
                 openWaypointEditor(draggingIndex); // Open the editor if a waypoint is clicked
             }
-        }
+            }
     } else if (mouseButton === RIGHT) {
         // Remove the waypoint if right-clicked within the halo
         path = path.filter(p => dist(mouseX - panX, mouseY - panY, p.x, p.y) >= 20); // No offset for grid center

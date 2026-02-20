@@ -12,6 +12,7 @@ function openWaypointEditor(index) {
 	document.getElementById('angular-direction-input').value = waypoint.angularDirection || "auto";
     document.getElementById('min-speed-input').value = waypoint.minSpeed;
     document.getElementById('max-speed-input').value = waypoint.maxSpeed;
+    document.getElementById('speed-input').value = waypoint.speed || 1;
     document.getElementById('timeout-input').value = waypoint.timeout;
 
     // Show the side panel
@@ -29,6 +30,7 @@ function saveWaypointChanges() {
 		waypoint.angularDirection = document.getElementById('angular-direction-input').value;
         waypoint.minSpeed = parseInt(document.getElementById('min-speed-input').value);
         waypoint.maxSpeed = parseInt(document.getElementById('max-speed-input').value);
+        waypoint.speed = parseFloat(document.getElementById('speed-input').value);
         waypoint.timeout = parseInt(document.getElementById('timeout-input').value);
 
         // Update and redraw the path

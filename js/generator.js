@@ -54,6 +54,59 @@ function generateCode() {
         }
     }
 
+    if (selectedConfig === 'evian-pid') {
+        let firstWaypoint = path[0];
+        // convert to trig bearing
+        let originAngle = ((360 - firstWaypoint.angle) + 90) % 360;
+
+        let prevX = 0;
+        let prevY = 0;
+        prevAngle = 0;
+
+        let code = "// Evian PID\n";
+        code += `// Starting point: (${((firstWaypoint.x - (canvasSize / 2)) / canvasSize * 144).toFixed(2)} in, ${((firstWaypoint.y  - (canvasSize / 2)) / canvasSize * -144).toFixed(2)} in)\n`;
+
+        for (let i = 1; i < path.length; i++) {
+            let waypoint = path[i];
+
+            let translatedX = (waypoint.x - firstWaypoint.x) / canvasSize * conversionFactor;
+            let translatedY = (waypoint.y - firstWaypoint.y) / canvasSize * conversionFactor;
+
+            // Rotate point (x and y flip here for complicated reasons)
+            const rotatedX = (translatedX * Math.sin(degreesToRadians(originAngle)) + 
+                            translatedY * Math.cos(degreesToRadians(originAngle)));
+            const rotatedY = (translatedX * Math.cos(degreesToRadians(originAngle)) - 
+                            translatedY * Math.sin(degreesToRadians(originAngle)));
+
+            let dx = rotatedX - prevX;
+            let dy = rotatedY - prevY;
+
+            let distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+            let turnAngle = radianstoDegrees(Math.atan2(dy, dx)) - prevAngle;
+            let trigBearingAngle = ((360 - turnAngle) + 90) % 360
+            
+            if (path[i].forwards === false) {
+                trigBearingAngle = (trigBearingAngle + 180) % 360;
+                distance = -distance;
+            }
+            
+            if (i != 1) {
+                code += `// Point ${i + 1}\nbasic\n    .turn_to_heading(dt, ${trigBearingAngle.toFixed(2)}.deg())\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(1.0)\n    .await;\n`
+            } else {
+                code += `dt.tracking.set_heading(${trigBearingAngle.toFixed(2)}.deg());\n// Point 2\n`
+            }
+            // code += `kw::driveTo(${distance.toFixed(2)}, ${path[i].timeout});\n`;
+            code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${path[i].speed})\n    .await;\n`
+
+            // console.log(`dx: ${dx}, dy: ${dy}, angle: ${trigBearingAngle}`);
+
+            prevX = rotatedX;
+            prevY = rotatedY;
+            // prevAngle = trigBearingAngle;
+
+            document.getElementById('code-output').textContent = code;
+        }
+    }
     if (selectedConfig === 'libks-pid') {
         let firstWaypoint = path[0];
         // convert to trig bearing
