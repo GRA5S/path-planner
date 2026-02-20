@@ -116,7 +116,17 @@ function mousePressed() {
                     maxSpeed: 127,
                     speed: 1,
                     timeout: 2000,
-                    angularDirection: "auto"
+                    angularDirection: "auto",
+                    actions: {
+                        hoard: false,
+                        outtake: false,
+                        matchload: false,
+                        midgoal: false,
+                        midgoalSkills: false,
+                        score: false,
+                        wing: false,
+                        intakeStop: false
+                    }
                 });
                 undoStack.push([...path]); // Save state for undo
                 generateCode();

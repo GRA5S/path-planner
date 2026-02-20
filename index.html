@@ -22,8 +22,8 @@
             <h2>Configuration</h2>
             <div class="config-section">
                 <select id="format-select" onchange="generateCode()">
-					<option value="libks-pid">libKW PID</option>
-                    <option value="libks-mtpoint">libKW Odom MTPoint</option>
+					<!-- <option value="libks-pid">libKW PID</option>
+                    <option value="libks-mtpoint">libKW Odom MTPoint</option> -->
                     <option value="evian-pid">Evian PID</option>
                     <option value="custom">Custom Format</option>
                 </select>
@@ -64,43 +64,52 @@
 	<!-- Waypoint Editor Panel -->
 	<div id="waypoint-editor" class="side-panel">
 	    <div class="editor-header">
-        	<h2 id="editor-title">Edit Waypoint</h2>
-        	<span class="close-button" onclick="closeWaypointEditor()">×</span>
-    	</div>
+	<h2 id="editor-title">Edit Waypoint</h2>
+	<span class="close-button" onclick="closeWaypointEditor()">×</span>
+	</div>
 
 	    <label for="angle">Rotation (degrees):</label>
 	    <input type="number" id="angle-input"><br>
 
-		<label for="include-turn">Include Turning:</label>
+		<!-- <label for="include-turn">Include Turning:</label>
 		<select id="include-turn-input">
 	        <option value="true">True</option>
 	        <option value="false">False</option>
 	    </select><br>
 
-	    <label for="forwards">Forwards:</label>
-	    <select id="forwards-input">
-	        <option value="true">True</option>
-	        <option value="false">False</option>
-	    </select><br>
-
 		<label for="angular-direction">Angular Direction:</label>
-    	<select id="angular-direction-input">
-    	    <option value="clockwise">Clockwise</option>
-    	    <option value="counter-clockwise">Counter-Clockwise</option>
+	<select id="angular-direction-input">
+	<option value="clockwise">Clockwise</option>
+	<option value="counter-clockwise">Counter-Clockwise</option>
 			<option value="auto">Auto</option>
-    	</select><br>
+	</select><br>
 
 	    <label for="min-speed">Minimum Speed:</label>
 	    <input type="number" id="min-speed-input" value="0"><br>
 
 	    <label for="max-speed">Maximum Speed:</label>
-	    <input type="number" id="max-speed-input" value="127"><br>
+	    <input type="number" id="max-speed-input" value="127"><br> -->
 
 	    <label for="speed">Speed (0-1):</label>
 	    <input type="number" id="speed-input" value="1" min="0" max="1" step="0.1"><br>
 
 	    <label for="timeout">Timeout (ms):</label>
 	    <input type="number" id="timeout-input" value="2000"><br>
+		<label for="forwards">Forwards:</label>
+	    <select id="forwards-input">
+	        <option value="true">True</option>
+	        <option value="false">False</option>
+	    </select><br>
+		<div class="actions-grid">
+			<label><input type="checkbox" id="action-hoard" class="action-checkbox"> Hoard</label>
+			<label><input type="checkbox" id="action-score" class="action-checkbox"> Score</label>
+			<label><input type="checkbox" id="action-outtake" class="action-checkbox"> Outtake</label>
+			<label><input type="checkbox" id="action-intake-stop" class="action-checkbox"> Intake Stop</label>
+			<label><input type="checkbox" id="action-matchload" class="action-checkbox"> Match Load</label>
+			<label><input type="checkbox" id="action-midgoal" class="action-checkbox"> Mid Goal</label>
+			<label><input type="checkbox" id="action-midgoal-skills" class="action-checkbox"> Mid Goal (Skills)</label>
+			<label><input type="checkbox" id="action-wing" class="action-checkbox"> Wing</label>
+		</div>
 
 	    <button onclick="saveWaypointChanges()">Save</button>
 	</div>

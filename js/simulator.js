@@ -241,7 +241,12 @@ function updateSimulation() {
     if (isTurning) {
         // Calculate target angle based on path direction if not already set
         if (targetPathAngle === undefined) {
-            targetPathAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+            let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            // handle backwards
+            if (nextWaypoint.forwards === false) {
+                angle = (angle + 180) % 360;
+            }
+            targetPathAngle = angle;
         }
         
         // Gradually update the robot angle based on turning speed
@@ -311,7 +316,11 @@ function updateSimulation() {
             // Calculate new target angle for next segment
             const nextDx = path[currentWaypointIndex + 1].x - path[currentWaypointIndex].x;
             const nextDy = path[currentWaypointIndex + 1].y - path[currentWaypointIndex].y;
-            targetPathAngle = Math.atan2(nextDy, nextDx) * (180 / Math.PI);
+            let angle = Math.atan2(nextDy, nextDx) * (180 / Math.PI);
+            if (path[currentWaypointIndex + 1].forwards === false) {
+                angle = (angle + 180) % 360;
+            }
+            targetPathAngle = angle;
             
             // Update robot position to new waypoint (but don't start moving yet)
             simulatedRobot = {
@@ -359,14 +368,18 @@ function handleProgressChange() {
         const nextWaypoint = path[targetIndex + 1];
         
         // Linear interpolation between waypoints
-        const dx = nextWaypoint.x - currentWaypoint.x;
-        const dy = nextWaypoint.y - currentWaypoint.y;
-        
-        // Calculate angle based on path direction
-        const pathAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-        
-        // When dragging the slider, just set the angle directly
-        currentRobotAngle = pathAngle;
+         const dx = nextWaypoint.x - currentWaypoint.x;
+         const dy = nextWaypoint.y - currentWaypoint.y;
+         
+         // Calculate angle based on path direction
+         let pathAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+         // If the path is backwards, face the opposite direction
+         if (nextWaypoint.forwards === false) {
+             pathAngle = (pathAngle + 180) % 360;
+         }
+         
+         // When dragging the slider, just set the angle directly
+         currentRobotAngle = pathAngle;
         
         // When manually setting position, turn off the turning phase
         isTurning = false;
