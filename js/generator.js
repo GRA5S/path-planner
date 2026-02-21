@@ -78,22 +78,22 @@ function generateCode() {
                         code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE);\n`;
                         break;
                     case 'matchload':
-                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.hood.set_low();\n`;
+                        code += `_ = self.matchload.toggle();\n`;
                         break;
                     case 'midgoal':
-                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.midgoal.set_high();\n`;
+                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_high();\n`;
                         break;
                     case 'midgoalSkills':
-                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n_ = self.midgoal.set_low();\n`;
+                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_low();\n`;
                         break;
                     case 'score':
-                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n`;
+                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
                         break;
                     case 'wing':
                         code += `_ = self.wing.toggle();\n`;
                         break;
                     case 'intakeStop':
-                        code += `_ = self.intake1.set_voltage(0);\n_ = self.intake2.set_voltage(0);\n`;
+                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
                         break;
                 }
             }
@@ -157,7 +157,7 @@ function generateCode() {
                             code += `_ = self.wing.toggle();\n`;
                             break;
                         case 'intakeStop':
-                            code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
+                            code += `_ = self.intake1.set_voltage(0.0.0);\n_ = self.intake2.set_voltage(0.0.0);\n`;
                             break;
                     }
                 }
