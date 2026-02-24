@@ -116,6 +116,7 @@ function mousePressed() {
                     maxSpeed: 127,
                     speed: 1.0,
                     timeout: 2000,
+                    delay: 0,
                     angularDirection: "auto",
                     actions: {
                         hoard: false,
@@ -125,7 +126,8 @@ function mousePressed() {
                         midgoalSkills: false,
                         score: false,
                         wing: false,
-                        intakeStop: false
+                        intakeStop: false,
+                        distreset: false
                     }
                 });
                 undoStack.push([...path]); // Save state for undo

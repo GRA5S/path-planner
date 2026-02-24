@@ -14,6 +14,7 @@ function openWaypointEditor(index) {
     document.getElementById('max-speed-input').value = waypoint.maxSpeed;
     document.getElementById('speed-input').value = waypoint.speed || 1.0;
     document.getElementById('timeout-input').value = waypoint.timeout;
+    document.getElementById('delay-input').value = waypoint.delay || 0;
 
     // Populate action checkboxes
     const actions = waypoint.actions || {};
@@ -25,6 +26,7 @@ function openWaypointEditor(index) {
     document.getElementById('action-score').checked = actions.score || false;
     document.getElementById('action-wing').checked = actions.wing || false;
     document.getElementById('action-intake-stop').checked = actions.intakeStop || false;
+    document.getElementById('action-distreset').checked = actions.distreset || false;
 
     // Show the side panel
     document.getElementById('waypoint-editor').style.display = 'block';
@@ -43,6 +45,7 @@ function saveWaypointChanges() {
         waypoint.maxSpeed = parseInt(document.getElementById('max-speed-input').value);
         waypoint.speed = parseFloat(document.getElementById('speed-input').value);
         waypoint.timeout = parseInt(document.getElementById('timeout-input').value);
+        waypoint.delay = parseInt(document.getElementById('delay-input').value);
 
         // Update action checkboxes
         waypoint.actions = {
@@ -53,7 +56,8 @@ function saveWaypointChanges() {
             midgoalSkills: document.getElementById('action-midgoal-skills').checked,
             score: document.getElementById('action-score').checked,
             wing: document.getElementById('action-wing').checked,
-            intakeStop: document.getElementById('action-intake-stop').checked
+            intakeStop: document.getElementById('action-intake-stop').checked,
+            distreset: document.getElementById('action-distreset').checked
         };
 
         // Update and redraw the path

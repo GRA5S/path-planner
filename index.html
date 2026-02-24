@@ -25,6 +25,8 @@
 					<!-- <option value="libks-pid">libKW PID</option>
                     <option value="libks-mtpoint">libKW Odom MTPoint</option> -->
                     <option value="evian-pid">Evian PID</option>
+                    <option value="evian-seeking">Evian Seeking</option>
+                    <option value="plaintext-commands">Plaintext Commands</option>
                     <option value="custom">Custom Format</option>
                 </select>
             </div>
@@ -95,6 +97,10 @@
 
 	    <label for="timeout">Timeout (ms):</label>
 	    <input type="number" id="timeout-input" value="2000"><br>
+
+	    <label for="delay">Delay (ms):</label>
+	    <input type="number" id="delay-input" value="0"><br>
+
 		<label for="forwards">Forwards:</label>
 	    <select id="forwards-input">
 	        <option value="true">True</option>
@@ -109,6 +115,7 @@
 			<label><input type="checkbox" id="action-midgoal" class="action-checkbox"> Mid Goal</label>
 			<label><input type="checkbox" id="action-midgoal-skills" class="action-checkbox"> Mid Goal (Skills)</label>
 			<label><input type="checkbox" id="action-wing" class="action-checkbox"> Wing</label>
+			<label><input type="checkbox" id="action-distreset" class="action-checkbox"> Dist Reset</label>
 		</div>
 
 	    <button onclick="saveWaypointChanges()">Save</button>
