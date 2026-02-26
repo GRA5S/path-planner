@@ -67,37 +67,7 @@ function generateCode() {
         code += `// Starting point: (${((firstWaypoint.x - (canvasSize / 2)) / canvasSize * 144).toFixed(2)} in, ${((firstWaypoint.y  - (canvasSize / 2)) / canvasSize * -144).toFixed(2)} in)\n`;
 
         // Generate actions for first waypoint
-        const firstActions = firstWaypoint.actions || {};
-        for (const [actionName, isActive] of Object.entries(firstActions)) {
-            if (isActive) {
-                switch(actionName) {
-                    case 'hoard':
-                        code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_high();\n_ = self.midgoal.set_low();\n`;
-                        break;
-                    case 'outtake':
-                        code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE);\n`;
-                        break;
-                    case 'matchload':
-                        code += `_ = self.matchload.toggle();\n`;
-                        break;
-                    case 'midgoal':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_high();\n`;
-                        break;
-                    case 'midgoalSkills':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_low();\n`;
-                        break;
-                    case 'score':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
-                        break;
-                    case 'wing':
-                        code += `_ = self.wing.toggle();\n`;
-                        break;
-                    case 'intakeStop':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
-                        break;
-                }
-            }
-        }
+        code += generateActionCode(firstWaypoint);
 
         for (let i = 1; i < path.length; i++) {
             let waypoint = path[i];
@@ -203,37 +173,7 @@ function generateCode() {
         // code += `// Starting point: (${((firstWaypoint.x - (canvasSize / 2)) / canvasSize * 144).toFixed(2)} in, ${((firstWaypoint.y  - (canvasSize / 2)) / canvasSize * -144).toFixed(2)} in)\n`;
 
         // Generate actions for first waypoint
-        const firstActions = firstWaypoint.actions || {};
-        for (const [actionName, isActive] of Object.entries(firstActions)) {
-            if (isActive) {
-                switch(actionName) {
-                    case 'hoard':
-                        code += `hoard\n`;
-                        break;
-                    case 'outtake':
-                        code += `outtake\n`;
-                        break;
-                    case 'matchload':
-                        code += `matchload`;
-                        break;
-                    case 'midgoal':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_high();\n`;
-                        break;
-                    case 'midgoalSkills':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n_ = self.midgoal.set_low();\n`;
-                        break;
-                    case 'score':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
-                        break;
-                    case 'wing':
-                        code += `_ = self.wing.toggle();\n`;
-                        break;
-                    case 'intakeStop':
-                        code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0);\n`;
-                        break;
-                }
-            }
-        }
+        code += generateActionCode(firstWaypoint);
 
         for (let i = 1; i < path.length; i++) {
             let waypoint = path[i];
@@ -267,37 +207,7 @@ function generateCode() {
             }
             // code += `kw::driveTo(${distance.toFixed(2)}, ${path[i].timeout});\n`;
             code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${path[i].speed})\n    .await;\n`
-            const actions = waypoint.actions || {};
-            for (const [actionName, isActive] of Object.entries(actions)) {
-                if (isActive) {
-                    switch(actionName) {
-                        case 'hoard':
-                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_high();\n_ = self.midgoal.set_low(); //hoard\n`;
-                            break;
-                        case 'outtake':
-                            code += `_ = self.intake1.set_voltage(-Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(-Motor::V5_MAX_VOLTAGE); //outtake\n`;
-                            break;
-                        case 'matchload':
-                            code += `_ = self.matchload.toggle(); //matchload\n`;
-                            break;
-                        case 'midgoal':
-                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high(); //midgoal\n`;
-                            break;
-                        case 'midgoalSkills':
-                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE/2.0);\n_ = self.hood.set_low();\n_ = self.midgoal.set_high(); //midgoalskills\n`;
-                            break;
-                        case 'score':
-                            code += `_ = self.intake1.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.intake2.set_voltage(Motor::V5_MAX_VOLTAGE);\n_ = self.hood.set_low();\n_ = self.midgoal.set_low(); //score\n`;
-                            break;
-                        case 'wing':
-                            code += `_ = self.wing.toggle(); //wing\n`;
-                            break;
-                        case 'intakeStop':
-                            code += `_ = self.intake1.set_voltage(0.0);\n_ = self.intake2.set_voltage(0.0); //stop intake\n`;
-                            break;
-                    }
-                }
-            }
+            code += generateActionCode(waypoint);
             // console.log(`dx: ${dx}, dy: ${dy}, angle: ${trigBearingAngle}`);
 
             prevX = rotatedX;
@@ -331,6 +241,40 @@ function generateCode() {
                 code += `\n  .reverse()\n  .await;\n`
             }
 
+            if (waypoint.includeTurn === true) {
+                // Convert angle to be relative to the path
+                let relativeAngle = (waypoint.angle - firstWaypoint.angle) % 360;
+                if (relativeAngle < 0) relativeAngle += 360;
+                code += `basic\n    .turn_to_heading(dt, ${relativeAngle}.deg())\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(1.0)\n    .await;\n`
+            }
+            
+            code += generateActionCode(waypoint);
+            
+            document.getElementById('code-output').textContent = code;
+        }
+    }
+    if (selectedConfig === 'evian-fuckyou') {
+        let firstWaypoint = path[0];
+        let firstX = (firstWaypoint.x - (canvasSize / 2)) / canvasSize * conversionFactor;
+        let firstY = (firstWaypoint.y - (canvasSize / 2)) / canvasSize * -conversionFactor;
+
+        let code = "// evian fucking seeking shit\n";
+        code += `self.drivetrain.tracking.set_position((${firstX.toFixed(2)}, ${firstY.toFixed(2)}));\n`;
+        code += `// Starting point: (${firstX.toFixed(2)} in, ${firstY.toFixed(2)} in)\n`;
+
+        for (let i = 0; i < path.length; i++) {
+            let waypoint = path[i];
+            let fieldX = (waypoint.x - (canvasSize / 2)) / canvasSize * conversionFactor;
+            let fieldY = (waypoint.y - (canvasSize / 2)) / canvasSize * -conversionFactor;
+
+            // code += `seeking.move_to_point(dt, (${fieldX.toFixed(2)}, ${fieldY.toFixed(2)})) ${path[i].timeout}, {.forwards = ${path[i].forwards}}); // Point ${i + 1}\n`;
+            if (path[i].forwards) {
+                code += `self.driveto(${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}, ${path[i].timeout}, ${parseFloat(path[i].speed).toFixed(1)}, &mut basic).await;\n`
+            }
+            else {
+                code += `self.reversedriveto(${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}, ${path[i].timeout}, ${parseFloat(path[i].speed).toFixed(1)}, &mut basic).await;\n`
+
+            }
             if (waypoint.includeTurn === true) {
                 // Convert angle to be relative to the path
                 let relativeAngle = (waypoint.angle - firstWaypoint.angle) % 360;
