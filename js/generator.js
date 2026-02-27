@@ -100,7 +100,7 @@ function generateCode() {
                 code += `dt.tracking.set_heading(${trigBearingAngle.toFixed(2)}.deg());\n// Point 2\n`
             }
             // code += `kw::driveTo(${distance.toFixed(2)}, ${path[i].timeout});\n`;
-            code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${path[i].speed})\n    .await;\n`
+            code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${parseFloat(path[i].speed).toFixed(1)})\n    .await;\n`
             
             code += generateActionCode(waypoint);
             // console.log(`dx: ${dx}, dy: ${dy}, angle: ${trigBearingAngle}`);
@@ -206,7 +206,7 @@ function generateCode() {
                 code += `dt.tracking.set_heading(${trigBearingAngle.toFixed(2)}.deg());\n// Point 2\n`
             }
             // code += `kw::driveTo(${distance.toFixed(2)}, ${path[i].timeout});\n`;
-            code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${path[i].speed})\n    .await;\n`
+            code += `basic\n    .drive_distance(dt, ${distance.toFixed(2)})\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(${parseFloat(path[i].speed).toFixed(1)})\n    .await;\n`
             code += generateActionCode(waypoint);
             // console.log(`dx: ${dx}, dy: ${dy}, angle: ${trigBearingAngle}`);
 
@@ -215,8 +215,8 @@ function generateCode() {
             // prevAngle = trigBearingAngle;
 
             document.getElementById('code-output').textContent = code;
-        }
-    }
+            }
+            }
 
     if (selectedConfig === 'evian-seeking') {
         let firstWaypoint = path[0];
@@ -224,7 +224,7 @@ function generateCode() {
         let firstY = (firstWaypoint.y - (canvasSize / 2)) / canvasSize * -conversionFactor;
 
         let code = "// evian seeking shit\n";
-        code += `self.drivetrain.tracking.set_position((${firstX.toFixed(2)}, ${firstY.toFixed(2)}));\n`;
+        code += `dt.tracking.set_position((${firstX.toFixed(2)}, ${firstY.toFixed(2)}));\n`;
         code += `// Starting point: (${firstX.toFixed(2)} in, ${firstY.toFixed(2)} in)\n`;
 
         for (let i = 0; i < path.length; i++) {

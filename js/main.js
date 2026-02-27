@@ -374,3 +374,10 @@ function drawSimulatedRobot() {
     line(0, 0, robotWidth / 2, 0); // Line extending from the center to the right side
     pop();
 }
+
+function reflectPathY() {
+    for (let i = 0; i < path.length; i++) {
+        path[i].y = canvasSize - path[i].y;
+    }
+    generateCode();
+}
