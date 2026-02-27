@@ -13,7 +13,7 @@ let undoStack = [];
 const fieldImages = {
     "v5rc-pushback": "./images/V5RC-PushBack-H2H-2000x2000.png",
     "v5rc-pushback-skills": "./images/V5RC-PushBack-Skills-2000x2000.png",
-
+    "vurc-pushback": "./images/VURC-PushBack-H2H-TopDownHighlighted-TileColor66_71@0.1+2000px.png",
     "v5rc-highstakes": "./images/V5RC-HighStakes-H2H-2000x2000.png",
     "v5rc-highstakes-skills": "./images/V5RC-HighStakes-Skills-2000x2000.png"
 };
