@@ -257,30 +257,26 @@ function generateCode() {
         let firstWaypoint = path[0];
         let firstX = (firstWaypoint.x - (canvasSize / 2)) / canvasSize * conversionFactor;
         let firstY = (firstWaypoint.y - (canvasSize / 2)) / canvasSize * -conversionFactor;
-
-        let code = "// evian fucking seeking shit\n";
-        code += `self.drivetrain.tracking.set_position((${firstX.toFixed(2)}, ${firstY.toFixed(2)}));\n`;
+        
+        let code = "// evian seeking shit\n";
+        code += `dt.tracking.set_position((${firstX.toFixed(2)}, ${firstY.toFixed(2)}));\n`;
         code += `// Starting point: (${firstX.toFixed(2)} in, ${firstY.toFixed(2)} in)\n`;
 
         for (let i = 0; i < path.length; i++) {
             let waypoint = path[i];
             let fieldX = (waypoint.x - (canvasSize / 2)) / canvasSize * conversionFactor;
             let fieldY = (waypoint.y - (canvasSize / 2)) / canvasSize * -conversionFactor;
-
+            
             // code += `seeking.move_to_point(dt, (${fieldX.toFixed(2)}, ${fieldY.toFixed(2)})) ${path[i].timeout}, {.forwards = ${path[i].forwards}}); // Point ${i + 1}\n`;
-            if (path[i].forwards) {
-                code += `self.driveto(${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}, ${path[i].timeout}, ${parseFloat(path[i].speed).toFixed(1)}, &mut basic).await;\n`
-            }
-            else {
-                code += `self.reversedriveto(${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}, ${path[i].timeout}, ${parseFloat(path[i].speed).toFixed(1)}, &mut basic).await;\n`
-
-            }
-            if (waypoint.includeTurn === true) {
-                // Convert angle to be relative to the path
-                let relativeAngle = (waypoint.angle - firstWaypoint.angle) % 360;
-                if (relativeAngle < 0) relativeAngle += 360;
-                code += `basic\n    .turn_to_heading(dt, ${relativeAngle}.deg())\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .with_linear_output_limit(1.0)\n    .await;\n`
-            }
+            code += `basic\n    .turn_to_point(dt, (${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}))\n    .with_timeout(Duration::from_millis(${path[i].timeout}))\n    .await;\n`
+            code += `seeking\n  .move_to_point(dt, (${fieldX.toFixed(2)}, ${fieldY.toFixed(2)}))\n  .with_timeout(Duration::from_millis(${path[i].timeout}))\n  .with_linear_output_limit(${parseFloat(path[i].speed).toFixed(1)}).await;\n`
+            
+            // if (path[i].forwards) {
+            //     code += `\n  .await;\n`
+            // }
+            // else {
+            //     code += `\n  .reverse()\n  .await;\n`
+            // }
             
             code += generateActionCode(waypoint);
             
